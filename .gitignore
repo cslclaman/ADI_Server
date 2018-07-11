@@ -20,4 +20,4 @@
 /out/
 
 ### Local Configuration Files ###
-/main/resources/application.properties
+/src/main/resources/application.properties

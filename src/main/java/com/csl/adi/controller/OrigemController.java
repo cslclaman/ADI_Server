@@ -1,8 +1,11 @@
 package com.csl.adi.controller;
 
+import com.csl.adi.model.Erro;
 import com.csl.adi.model.Origem;
 import com.csl.adi.repository.OrigemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,65 +18,76 @@ public class OrigemController {
     private OrigemRepository origemRepository;
 
     @GetMapping (path = "")
-    public @ResponseBody List<Origem> getListaOrigens() {
-        return origemRepository.findAll();
-    }
-
-    @GetMapping (path = "/sigla/{sigla}")
-    public @ResponseBody Origem getOrigemPorSigla (@PathVariable String sigla) {
-        if (sigla == null){
-            return null;
-        } else {
-            return origemRepository.findBySigla(sigla);
-        }
+    public @ResponseBody ResponseEntity<List> getListaOrigens() {
+        return new ResponseEntity<>(origemRepository.findAll(), HttpStatus.OK);
     }
 
     @GetMapping (path = "/id/{id}")
-    public @ResponseBody Origem getOrigemPorId(@PathVariable Integer id) {
-        if (id == null){
-            return null;
+    public @ResponseBody ResponseEntity getOrigemPorId(@PathVariable Integer id) {
+        Origem origem = origemRepository.findOneById(id);
+        if (origem == null){
+            Erro erro = new Erro(HttpStatus.NOT_FOUND,"Origem não encontrada com ID: " + id );
+            return new ResponseEntity(erro, erro.getHttpStatus());
         } else {
-            return origemRepository.findOneById(id);
+            return new ResponseEntity(origem, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping (path = "/sigla/{sigla}")
+    public @ResponseBody ResponseEntity getOrigemPorSigla (@PathVariable String sigla) {
+        Origem origem = origemRepository.findBySigla(sigla);
+        if (origem == null){
+            Erro erro = new Erro(HttpStatus.NOT_FOUND,"Origem não encontrada com Sigla: " + sigla );
+            return new ResponseEntity(erro, erro.getHttpStatus());
+        } else {
+            return new ResponseEntity(origem, HttpStatus.OK);
         }
     }
 
     @PostMapping (path = "")
-    public @ResponseBody Origem postOrigem (@RequestBody Origem origem) {
-        return origemRepository.save(origem);
-    }
-
-    @PutMapping (path = "/id/{id}")
-    public @ResponseBody Origem updateOrigemById (@PathVariable Integer id, @RequestBody Origem origem){
-        Origem original = origemRepository.findOneById(id);
-        if (original == null){
-            return null;
-        } else {
-            origem.setId(original.getId());
-            origem.setSigla(original.getSigla());
-            return origemRepository.save(origem);
+    public @ResponseBody ResponseEntity postOrigem (@RequestBody Origem origem) {
+        try {
+            Origem created = origemRepository.save(origem);
+            return new ResponseEntity(created, HttpStatus.CREATED);
+        } catch (Exception e){
+            Erro erro = new Erro( HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return new ResponseEntity(erro, erro.getHttpStatus());
         }
     }
 
-    @PutMapping (path = "/sigla/{sigla}")
-    public @ResponseBody Origem updateOrigemBySigla (@PathVariable String sigla, @RequestBody Origem origem){
-        Origem original = origemRepository.findBySigla(sigla);
+    @PutMapping (path = "/id/{id}")
+    public @ResponseBody ResponseEntity updateOrigemById (@PathVariable Integer id, @RequestBody Origem origem){
+        Origem original = origemRepository.findOneById(id);
         if (original == null){
-            return null;
+            Erro erro = new Erro(HttpStatus.NOT_FOUND,"Origem não encontrada com ID: " + id );
+            return new ResponseEntity(erro, erro.getHttpStatus());
         } else {
-            origem.setId(original.getId());
-            origem.setSigla(original.getSigla());
-            return origemRepository.save(origem);
+            try {
+                origem.setId(original.getId());
+                origem.setSigla(original.getSigla());
+                origemRepository.save(origem);
+                return new ResponseEntity(HttpStatus.NO_CONTENT);
+            } catch (Exception e){
+                Erro erro = new Erro( HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+                return new ResponseEntity(erro, erro.getHttpStatus());
+            }
         }
     }
 
     @DeleteMapping (path = "/id/{id}")
-    public @ResponseBody String deleteOrigemById(@PathVariable Integer id) {
+    public @ResponseBody ResponseEntity deleteOrigemById(@PathVariable Integer id) {
         Origem origem = origemRepository.findOneById(id);
         if (origem == null){
-            return "Erro";
+            Erro erro = new Erro(HttpStatus.NOT_FOUND,"Origem não encontrada com ID: " + id );
+            return new ResponseEntity(erro, erro.getHttpStatus());
         } else {
-            origemRepository.delete(origem);
-            return "Deletado";
+            try {
+                origemRepository.delete(origem);
+                return new ResponseEntity(HttpStatus.NO_CONTENT);
+            } catch (Exception e){
+                Erro erro = new Erro( HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+                return new ResponseEntity(erro, erro.getHttpStatus());
+            }
         }
     }
 

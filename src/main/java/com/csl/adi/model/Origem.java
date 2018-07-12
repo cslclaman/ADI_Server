@@ -5,6 +5,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
+/**
+ * Representa um site/imageboard de origem, provedor de imagens.
+ */
 @Entity
 @Table(name = "Origem")
 public class Origem {

@@ -1,16 +1,21 @@
 package com.csl.adi.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Objects;
+import java.io.Serializable;
 
 /**
  * Representa um site/imageboard de origem, provedor de imagens.
  */
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "Origem")
-public class Origem {
+public class Origem implements Serializable {
 
     @Id
     @Column (name = "id")
@@ -53,107 +58,4 @@ public class Origem {
     @Size(max = 16)
     private String locale;
 
-    public Origem() {
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getSigla() {
-        return sigla;
-    }
-
-    public void setSigla(String sigla) {
-        this.sigla = sigla;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public Boolean getAtiva() {
-        return ativa;
-    }
-
-    public void setAtiva(Boolean ativa) {
-        this.ativa = ativa;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getUrlBaseApi() {
-        return urlBaseApi;
-    }
-
-    public void setUrlBaseApi(String urlBaseApi) {
-        this.urlBaseApi = urlBaseApi;
-    }
-
-    public String getFormatoData() {
-        return formatoData;
-    }
-
-    public void setFormatoData(String formatoData) {
-        this.formatoData = formatoData;
-    }
-
-    public String getLocale() {
-        return locale;
-    }
-
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Origem origem = (Origem) o;
-        return Objects.equals(sigla, origem.sigla) &&
-                Objects.equals(nome, origem.nome);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(sigla, nome);
-    }
-
-    @Override
-    public String toString() {
-        return "Origem{" +
-                "id=" + id +
-                ", sigla='" + sigla + '\'' +
-                ", nome='" + nome + '\'' +
-                ", tipo='" + tipo + '\'' +
-                ", ativa=" + ativa +
-                ", url='" + url + '\'' +
-                ", urlBaseApi='" + urlBaseApi + '\'' +
-                ", formatoData='" + formatoData + '\'' +
-                ", locale='" + locale + '\'' +
-                '}';
-    }
 }

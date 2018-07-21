@@ -2,16 +2,18 @@ package com.csl.adi.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 import java.util.Date;
 
+@Getter
 public class Erro {
 
     @JsonIgnore
     private HttpStatus httpStatus;
 
-    private int codigo;
+    private Integer codigo;
     private String status;
     private String mensagem;
 
@@ -28,33 +30,18 @@ public class Erro {
 
     public Erro(int codigo, String mensagem) {
         this.httpStatus = HttpStatus.resolve(codigo);
-        this.codigo = httpStatus.value();
-        this.status = httpStatus.getReasonPhrase();
+        if (httpStatus != null){
+            this.codigo = httpStatus.value();
+            this.status = httpStatus.getReasonPhrase();
+        } else {
+            this.codigo = codigo;
+            this.status = "";
+        }
         this.mensagem = mensagem;
         this.data = new Date();
     }
 
-    public int getCodigo() {
-        return codigo;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public String getMensagem() {
-        return mensagem;
-    }
-
-    public Date getData() {
-        return data;
-    }
-
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
-    }
-
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
     }
 }

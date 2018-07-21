@@ -50,4 +50,38 @@ public class UrlController {
         }
     }
 
+    @PutMapping (path = "/id/{id}")
+    public ResponseEntity putUrl (@PathVariable Integer id, @RequestBody Url url){
+        Url original = urlRepository.findOneById(id);
+        if (original == null) {
+            Erro erro = new Erro(HttpStatus.NOT_FOUND, "Url não encontrada com ID: " + id);
+            return new ResponseEntity(erro, erro.getHttpStatus());
+        } else {
+            try {
+                url.setId(original.getId());
+                urlRepository.save(url);
+                return new ResponseEntity(HttpStatus.NO_CONTENT);
+            } catch (Exception e) {
+                Erro erro = new Erro(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+                return new ResponseEntity(erro, erro.getHttpStatus());
+            }
+        }
+    }
+
+    @DeleteMapping (path = "/id/{id}")
+    public @ResponseBody ResponseEntity deleteOrigemById(@PathVariable Integer id) {
+        Url url = urlRepository.findOneById(id);
+        if (url == null){
+            Erro erro = new Erro(HttpStatus.NOT_FOUND,"Url não encontrada com ID: " + id );
+            return new ResponseEntity(erro, erro.getHttpStatus());
+        } else {
+            try {
+                urlRepository.delete(url);
+                return new ResponseEntity(HttpStatus.NO_CONTENT);
+            } catch (Exception e){
+                Erro erro = new Erro(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+                return new ResponseEntity(erro, erro.getHttpStatus());
+            }
+        }
+    }
 }

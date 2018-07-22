@@ -20,11 +20,11 @@ public class Url implements Serializable {
     @Id
     @Column (name = "id")
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column (name = "origem")
     @NotNull
-    private Integer origem;
+    private Long origem;
 
     @Column (name = "descricao")
     @NotNull

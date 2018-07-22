@@ -13,23 +13,18 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "imagem")
+@Table(name = "Imagem")
 public class Imagem implements Serializable {
 
     @Column (name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column (name = "md5")
+    @Column (name = "md5", unique = true)
     @NotNull
     @Size(max = 40)
     private String md5;
-
-    @Column (name = "sha1")
-    @NotNull
-    @Size(max = 70)
-    private String sha1;
 
     @Column (name = "tag_string")
     @NotNull
@@ -48,7 +43,7 @@ public class Imagem implements Serializable {
     @Column (name = "caminho_arquivo")
     @NotNull
     @Size(max = 256)
-    private String aaaa;
+    private String caminhoArquivo;
 
     @Column (name = "tamanho_arquivo")
     @NotNull
@@ -63,7 +58,11 @@ public class Imagem implements Serializable {
     @JsonFormat (shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss Z", timezone = "GMT-3")
     private String atualizadaEm;
 
-    @Column (name = "atualizada_em")
+    @Column (name = "desativada_em")
+    @JsonFormat (shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss Z", timezone = "GMT-3")
+    private String desativadaEm;
+
+    @Column (name = "arquivo_original")
     @Size(max = 256)
     private String arquivoOriginal;
 }

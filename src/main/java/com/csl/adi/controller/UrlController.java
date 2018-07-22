@@ -25,7 +25,7 @@ public class UrlController {
     }
 
     @GetMapping (path = "/origem/{origem}")
-    public @ResponseBody ResponseEntity getListaUrlsPorOrigem (@PathVariable Integer origem) {
+    public @ResponseBody ResponseEntity getListaUrlsPorOrigem (@PathVariable Long origem) {
         if (!origemRepository.existsById(origem)){
             Erro erro = new Erro(HttpStatus.NOT_FOUND,"Origem não encontrada com ID: " + origem );
             return new ResponseEntity(erro, erro.getHttpStatus());
@@ -51,7 +51,7 @@ public class UrlController {
     }
 
     @PutMapping (path = "/id/{id}")
-    public ResponseEntity putUrl (@PathVariable Integer id, @RequestBody Url url){
+    public ResponseEntity putUrl (@PathVariable Long id, @RequestBody Url url){
         Url original = urlRepository.findOneById(id);
         if (original == null) {
             Erro erro = new Erro(HttpStatus.NOT_FOUND, "Url não encontrada com ID: " + id);
@@ -69,7 +69,7 @@ public class UrlController {
     }
 
     @DeleteMapping (path = "/id/{id}")
-    public @ResponseBody ResponseEntity deleteOrigemById(@PathVariable Integer id) {
+    public @ResponseBody ResponseEntity deleteOrigemById(@PathVariable Long id) {
         Url url = urlRepository.findOneById(id);
         if (url == null){
             Erro erro = new Erro(HttpStatus.NOT_FOUND,"Url não encontrada com ID: " + id );

@@ -23,7 +23,7 @@ public class OrigemController {
     }
 
     @GetMapping (path = "/id/{id}")
-    public @ResponseBody ResponseEntity getOrigemPorId(@PathVariable Integer id) {
+    public @ResponseBody ResponseEntity getOrigemPorId(@PathVariable Long id) {
         Origem origem = origemRepository.findOneById(id);
         if (origem == null){
             Erro erro = new Erro(HttpStatus.NOT_FOUND,"Origem não encontrada com ID: " + id );
@@ -56,7 +56,7 @@ public class OrigemController {
     }
 
     @PutMapping (path = "/id/{id}")
-    public @ResponseBody ResponseEntity updateOrigemById (@PathVariable Integer id, @RequestBody Origem origem){
+    public @ResponseBody ResponseEntity updateOrigemById (@PathVariable Long id, @RequestBody Origem origem){
         Origem original = origemRepository.findOneById(id);
         if (original == null){
             Erro erro = new Erro(HttpStatus.NOT_FOUND,"Origem não encontrada com ID: " + id );
@@ -75,7 +75,7 @@ public class OrigemController {
     }
 
     @DeleteMapping (path = "/id/{id}")
-    public @ResponseBody ResponseEntity deleteOrigemById(@PathVariable Integer id) {
+    public @ResponseBody ResponseEntity deleteOrigemById(@PathVariable Long id) {
         Origem origem = origemRepository.findOneById(id);
         if (origem == null){
             Erro erro = new Erro(HttpStatus.NOT_FOUND,"Origem não encontrada com ID: " + id );

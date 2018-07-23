@@ -6,10 +6,12 @@ import org.springframework.data.domain.Pageable;
 
 public interface AdiTagRepository extends BaseRepository<AdiTag, Long> {
 
-    Page<AdiTag> findAdiTagByTipoIgnoreCaseContainingAndTagIgnoreCaseContaining (
-            Pageable pageable,
-            String tipo,
-            String tag
+    Page<AdiTag> findByTipoIgnoreCaseContainingAndTagIgnoreCaseContaining (
+            Pageable pageable, String tipo, String tag
+    );
+
+    Page<AdiTag> findByTipoIgnoreCaseContainingAndTagIgnoreCaseContainingAndHasInfo (
+            Pageable pageable, String tipo, String tag, Boolean hasInfo
     );
 
 }

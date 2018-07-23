@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface TagRepository extends BaseRepository<Tag, Long> {
 
-    Page<Tag> findTagByTagIgnoreCaseContaining (
+    Page<Tag> findByTagIgnoreCaseContaining (
             Pageable pageable,
             String tag
     );
 
-    List<Tag> findTagByAdiTag (Long adiTag);
+    List<Tag> findByAdiTag (Long adiTag);
 
 }

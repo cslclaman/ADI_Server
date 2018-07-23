@@ -12,7 +12,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table (name = "Info")
-public class Info implements Serializable {
+@Inheritance (strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn (name = "tipo")
+public abstract class Info implements Serializable {
 
     @Column (name = "id")
     @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -23,6 +25,16 @@ public class Info implements Serializable {
     @NotNull
     private Long adiTag;
 
+    @Column (name = "tipo", insertable = false, updatable = false)
+    @NotNull
+    @Size (max = 5)
+    private String tipo;
+
+    @Column (name = "tag")
+    @NotNull
+    @Size (max = 512)
+    private String tag;
+
     @Column (name = "nome")
     @NotNull
     @Size (max = 512)
@@ -31,8 +43,5 @@ public class Info implements Serializable {
     @Column (name = "comentario")
     @Size (max = 512)
     private String comentario;
-
-
-
 
 }

@@ -4,13 +4,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Data
 @NoArgsConstructor
-@Entity
-@Table (name = "Info")
+@Entity (name = "Personagem")
+@DiscriminatorValue("p")
 public class Personagem extends Info {
 
     @Column (name = "personagem_serie")

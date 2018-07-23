@@ -8,59 +8,57 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping(path = "/api/v1/origem")
+@RequestMapping(path = "api/v1/origem")
 public class OrigemController {
 
     @Autowired
     private OrigemRepository origemRepository;
 
     @GetMapping (path = "")
-    public @ResponseBody ResponseEntity<List> getListaOrigens() {
+    public ResponseEntity<?> getOrigemLista () {
         return new ResponseEntity<>(origemRepository.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping (path = "/id/{id}")
-    public @ResponseBody ResponseEntity getOrigemPorId(@PathVariable Long id) {
+    @GetMapping (path = "id/{id}")
+    public ResponseEntity<?> getOrigemPorId (@PathVariable Long id) {
         Origem origem = origemRepository.findOneById(id);
         if (origem == null){
             Erro erro = new Erro(HttpStatus.NOT_FOUND,"Origem não encontrada com ID: " + id );
-            return new ResponseEntity(erro, erro.getHttpStatus());
+            return new ResponseEntity<>(erro, erro.getHttpStatus());
         } else {
-            return new ResponseEntity(origem, HttpStatus.OK);
+            return new ResponseEntity<>(origem, HttpStatus.OK);
         }
     }
 
-    @GetMapping (path = "/sigla/{sigla}")
-    public @ResponseBody ResponseEntity getOrigemPorSigla (@PathVariable String sigla) {
+    @GetMapping (path = "sigla/{sigla}")
+    public ResponseEntity<?> getOrigemPorSigla (@PathVariable String sigla) {
         Origem origem = origemRepository.findBySigla(sigla);
         if (origem == null){
             Erro erro = new Erro(HttpStatus.NOT_FOUND,"Origem não encontrada com Sigla: " + sigla );
-            return new ResponseEntity(erro, erro.getHttpStatus());
+            return new ResponseEntity<>(erro, erro.getHttpStatus());
         } else {
-            return new ResponseEntity(origem, HttpStatus.OK);
+            return new ResponseEntity<>(origem, HttpStatus.OK);
         }
     }
 
     @PostMapping (path = "")
-    public @ResponseBody ResponseEntity postOrigem (@RequestBody Origem origem) {
+    public ResponseEntity<?> postOrigem (@RequestBody Origem origem) {
         try {
             Origem created = origemRepository.save(origem);
-            return new ResponseEntity(created, HttpStatus.CREATED);
+            return new ResponseEntity<>(created, HttpStatus.CREATED);
         } catch (Exception e){
             Erro erro = new Erro( HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-            return new ResponseEntity(erro, erro.getHttpStatus());
+            return new ResponseEntity<>(erro, erro.getHttpStatus());
         }
     }
 
-    @PutMapping (path = "/id/{id}")
-    public @ResponseBody ResponseEntity updateOrigemById (@PathVariable Long id, @RequestBody Origem origem){
+    @PutMapping (path = "id/{id}")
+    public ResponseEntity<?> putOrigemPorId (@PathVariable Long id, @RequestBody Origem origem){
         Origem original = origemRepository.findOneById(id);
         if (original == null){
             Erro erro = new Erro(HttpStatus.NOT_FOUND,"Origem não encontrada com ID: " + id );
-            return new ResponseEntity(erro, erro.getHttpStatus());
+            return new ResponseEntity<>(erro, erro.getHttpStatus());
         } else {
             try {
                 origem.setId(original.getId());
@@ -69,24 +67,24 @@ public class OrigemController {
                 return new ResponseEntity(HttpStatus.NO_CONTENT);
             } catch (Exception e){
                 Erro erro = new Erro( HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-                return new ResponseEntity(erro, erro.getHttpStatus());
+                return new ResponseEntity<>(erro, erro.getHttpStatus());
             }
         }
     }
 
-    @DeleteMapping (path = "/id/{id}")
-    public @ResponseBody ResponseEntity deleteOrigemById(@PathVariable Long id) {
+    @DeleteMapping (path = "id/{id}")
+    public ResponseEntity<?> deleteOrigemPorId(@PathVariable Long id) {
         Origem origem = origemRepository.findOneById(id);
         if (origem == null){
             Erro erro = new Erro(HttpStatus.NOT_FOUND,"Origem não encontrada com ID: " + id );
-            return new ResponseEntity(erro, erro.getHttpStatus());
+            return new ResponseEntity<>(erro, erro.getHttpStatus());
         } else {
             try {
                 origemRepository.delete(origem);
                 return new ResponseEntity(HttpStatus.NO_CONTENT);
             } catch (Exception e){
                 Erro erro = new Erro( HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-                return new ResponseEntity(erro, erro.getHttpStatus());
+                return new ResponseEntity<>(erro, erro.getHttpStatus());
             }
         }
     }

@@ -21,27 +21,27 @@ public class TagController {
     private TagRepository tagRepository;
 
     @GetMapping ("")
-    public ResponseEntity<?> getTagList (
+    public ResponseEntity<?> getTagLista (
             @PageableDefault Pageable pageable,
             @RequestParam (name = "tag", required = false) String tag
     ){
         if (tag == null) tag = "";
 
-        Page<Tag> page = tagRepository.findTagByTagIgnoreCaseContaining(pageable, tag);
+        Page<Tag> page = tagRepository.findByTagIgnoreCaseContaining(pageable, tag);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
     @GetMapping ("aditag/{adiTag}")
-    public ResponseEntity<?> getTagListByAdiTag (
+    public ResponseEntity<?> getTagListaPorAdiTag (
             @PageableDefault Pageable pageable,
             @PathVariable Long adiTag
     ){
-        List<Tag> list = tagRepository.findTagByAdiTag(adiTag);
+        List<Tag> list = tagRepository.findByAdiTag(adiTag);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @GetMapping ("id/{id}")
-    public ResponseEntity<?> getTagById (@PathVariable Long id){
+    public ResponseEntity<?> getTagPorId (@PathVariable Long id){
         Tag tag = tagRepository.findOneById(id);
         if (tag == null){
             Erro erro = new Erro(HttpStatus.NOT_FOUND,"Tag não encontrada com ID: " + id );
@@ -63,7 +63,7 @@ public class TagController {
     }
 
     @PutMapping ("id/{id}")
-    public ResponseEntity<?> putAdiTagById (@PathVariable Long id, @RequestBody Tag tag){
+    public ResponseEntity<?> putAdiTagPorId (@PathVariable Long id, @RequestBody Tag tag){
         Tag original = tagRepository.findOneById(id);
         if (original == null){
             Erro erro = new Erro(404, "Tag não encontrada com ID: " + id);

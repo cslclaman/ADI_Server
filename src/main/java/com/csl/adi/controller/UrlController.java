@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/api/v1/url")
+@RequestMapping(path = "api/v1/url")
 public class UrlController {
 
     @Autowired
@@ -20,13 +20,13 @@ public class UrlController {
     private OrigemRepository origemRepository;
 
     @GetMapping (path = "")
-    public @ResponseBody ResponseEntity getListaUrls () {
+    public ResponseEntity<?> getUrlLista () {
         return new ResponseEntity(urlRepository.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping (path = "/origem/{origem}")
-    public @ResponseBody ResponseEntity getListaUrlsPorOrigem (@PathVariable Long origem) {
-        if (!origemRepository.existsById(origem)){
+    @GetMapping (path = "origem/{origem}")
+    public ResponseEntity<?> getUrlListaPorOrigem (@PathVariable Long origem) {
+        if (origemRepository.findOneById(origem) == null){
             Erro erro = new Erro(HttpStatus.NOT_FOUND,"Origem não encontrada com ID: " + origem );
             return new ResponseEntity(erro, erro.getHttpStatus());
         } else {
@@ -35,8 +35,8 @@ public class UrlController {
     }
 
     @PostMapping (path = "")
-    public ResponseEntity postUrl (@RequestBody Url url){
-        if (!origemRepository.existsById(url.getOrigem())){
+    public ResponseEntity<?> postUrl (@RequestBody Url url){
+        if (origemRepository.findOneById(url.getOrigem()) == null){
             Erro erro = new Erro(HttpStatus.NOT_FOUND,"Origem não encontrada com ID: " + url.getOrigem() );
             return new ResponseEntity(erro, erro.getHttpStatus());
         } else {
@@ -51,7 +51,7 @@ public class UrlController {
     }
 
     @PutMapping (path = "/id/{id}")
-    public ResponseEntity putUrl (@PathVariable Long id, @RequestBody Url url){
+    public ResponseEntity<?> putUrlPorId (@PathVariable Long id, @RequestBody Url url){
         Url original = urlRepository.findOneById(id);
         if (original == null) {
             Erro erro = new Erro(HttpStatus.NOT_FOUND, "Url não encontrada com ID: " + id);
@@ -69,7 +69,7 @@ public class UrlController {
     }
 
     @DeleteMapping (path = "/id/{id}")
-    public @ResponseBody ResponseEntity deleteOrigemById(@PathVariable Long id) {
+    public ResponseEntity<?> deleteUrlPorId(@PathVariable Long id) {
         Url url = urlRepository.findOneById(id);
         if (url == null){
             Erro erro = new Erro(HttpStatus.NOT_FOUND,"Url não encontrada com ID: " + id );

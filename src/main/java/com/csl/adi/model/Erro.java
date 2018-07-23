@@ -11,14 +11,14 @@ import java.util.Date;
 public class Erro {
 
     @JsonIgnore
-    private HttpStatus httpStatus;
+    private final HttpStatus httpStatus;
 
-    private Integer codigo;
-    private String status;
+    private final Integer codigo;
+    private final String status;
     private String mensagem;
 
     @JsonFormat (shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss Z", timezone = "GMT-3")
-    private Date data;
+    private final Date data;
 
     public Erro(HttpStatus httpStatus, String mensagem) {
         this.httpStatus = httpStatus;
